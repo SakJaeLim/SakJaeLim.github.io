@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SakJae Lim (임석제)</title>
+  <meta name="description" content="SakJae Lim (임석제), Ph.D. student in AI Convergence at aSSIST University. Ontology, knowledge graphs, explainable AI, public data quality, and AX strategy consulting." />
+  <meta name="author" content="SakJae Lim" />
+  <meta name="keywords" content="SakJae Lim, 임석제, ontology, knowledge graph, explainable AI, LLM, public data quality, aSSIST" />
+  <link rel="canonical" href="https://sakjaelim.github.io/" />
+
+  <!-- 미리보기 카드 (링크 공유할 때 보이는 제목과 설명) -->
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="SakJae Lim (임석제)" />
+  <meta property="og:description" content="Ontology, Knowledge Graphs & Trustworthy AI. Ph.D. student, aSSIST University." />
+  <meta property="og:url" content="https://sakjaelim.github.io/" />
+  <meta property="og:image" content="https://sakjaelim.github.io/assets/profile.jpg" />
+
+  <!-- 화면 그리기 전에 테마부터 정한다 (처음 열 때 하얗게 번쩍이는 것 방지) -->
+  <script>
+    (function () {
+      var t = 'system';
+      try { t = localStorage.getItem('theme') || 'system'; } catch (e) {}
+      var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme-setting', t);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@300;400;700&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css" />
+
+  <style>
+    /* al-folio 색상 체계를 따른다. 라이트는 보라, 다크는 청록 */
+    :root, [data-theme="light"] {
+      --bg: #ffffff;
+      --text: #000000;
+      --muted: #828282;
+      --accent: #b509ac;
+      --divider: rgba(0, 0, 0, .1);
+      --card: #ffffff;
+      --code: #f6f6f6;
+      --nav: rgba(255, 255, 255, .96);
+      --todo-bg: #fef3c7; --todo-fg: #92400e;
+    }
+    [data-theme="dark"] {
+      --bg: #1c1c1d;
+      --text: #e8e8e8;
+      --muted: #9a9a9a;
+      --accent: #2698ba;
+      --divider: #424246;
+      --card: #212529;
+      --code: #2c3237;
+      --nav: rgba(28, 28, 29, .96);
+      --todo-bg: #3b2f12; --todo-fg: #fcd34d;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: Roboto, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
+      font-weight: 300; font-size: 16px; line-height: 1.6;
+      transition: background-color .2s, color .2s;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    b, strong { font-weight: 500; }
+    h2 { font-family: "Roboto Slab", serif; font-weight: 400; font-size: 1.6rem; margin: 2.6rem 0 .8rem; }
+    h3 { font-weight: 500; font-size: 1.05rem; margin: 1.2rem 0 .4rem; }
+    .container { max-width: 930px; margin: 0 auto; padding: 0 16px; }
+
+    /* ---------- 위쪽 메뉴 ---------- */
+    nav.top {
+      position: fixed; inset: 0 0 auto 0; z-index: 10;
+      background: var(--nav); border-bottom: 1px solid var(--divider);
+      backdrop-filter: blur(6px);
+    }
+    nav.top .container { display: flex; align-items: center; height: 56px; gap: 12px; }
+    .brand { font-weight: 400; color: var(--text); white-space: nowrap; }
+    .brand b { font-weight: 700; }
+    .brand:hover { text-decoration: none; color: var(--accent); }
+    .menu { margin-left: auto; display: flex; align-items: center; gap: 4px; list-style: none; padding: 0; margin-block: 0; }
+    .menu a {
+      display: block; padding: 6px 10px; color: var(--text); font-size: .9rem;
+      text-transform: uppercase; letter-spacing: .02em;
+    }
+    .menu a:hover, .menu a.active { color: var(--accent); text-decoration: none; }
+    #theme-toggle, #menu-btn {
+      background: none; border: 0; color: var(--text); cursor: pointer;
+      font-size: 1.05rem; padding: 6px 8px; line-height: 1;
+    }
+    #theme-toggle:hover, #menu-btn:hover { color: var(--accent); }
+    #menu-btn { display: none; }
+    #lang {
+      background: transparent; color: var(--text); border: 1px solid var(--divider);
+      border-radius: 4px; font: inherit; font-size: .8rem; padding: 3px 4px; cursor: pointer;
+    }
+    #lang option { background: var(--bg); color: var(--text); }
+    /* Google 번역이 위에 띄우는 띠와 말풍선을 숨긴다 */
+    iframe.skiptranslate, .goog-te-banner-frame, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+    body { top: 0 !important; }
+    font[style] { background: none !important; box-shadow: none !important; }
+    @media (max-width: 760px) {
+      #menu-btn { display: block; margin-left: auto; }
+      .menu {
+        display: none; position: absolute; top: 56px; left: 0; right: 0;
+        flex-direction: column; align-items: flex-end; padding: 8px 16px;
+        background: var(--nav); border-bottom: 1px solid var(--divider);
+      }
+      .menu.open { display: flex; }
+    }
+
+    main.container { padding-top: 88px; }
+
+    /* ---------- 머리말과 프로필 ---------- */
+    .post-title { font-family: "Roboto Slab", serif; font-weight: 300; font-size: 2.6rem; margin: 0; }
+    .post-title b { font-weight: 700; }
+    .post-title .ko { font-family: "Noto Sans KR", sans-serif; font-size: 1.5rem; color: var(--muted); margin-left: .4rem; }
+    .desc { color: var(--muted); margin: .2rem 0 1.4rem; }
+    .profile { float: right; width: 30%; max-width: 250px; margin: 0 0 1rem 1.5rem; text-align: center; }
+    .profile .photo {
+      width: 100%; aspect-ratio: 1 / 1; border-radius: 50%; object-fit: cover;
+      box-shadow: 0 2px 5px rgba(0,0,0,.16), 0 2px 10px rgba(0,0,0,.12);
+    }
+    .profile .initials {
+      width: 100%; aspect-ratio: 1 / 1; border-radius: 50%;
+      display: none; align-items: center; justify-content: center;
+      font-family: "Roboto Slab", serif; font-size: 3.2rem; color: var(--accent);
+      background: var(--code); box-shadow: 0 2px 5px rgba(0,0,0,.16);
+    }
+    .more-info { font-size: .85rem; color: var(--muted); margin-top: .8rem; line-height: 1.5; }
+    .more-info p { margin: 0; }
+    .clearfix::after { content: ""; display: table; clear: both; }
+    @media (max-width: 576px) {
+      .profile { float: none; width: 60%; margin: 0 auto 1.2rem; }
+      .post-title { font-size: 2rem; }
+    }
+
+    /* ---------- News 표 ---------- */
+    table.news { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    table.news th { width: 20%; text-align: left; vertical-align: top; font-weight: 500; padding: .35rem .5rem .35rem 0; white-space: nowrap; }
+    table.news td { padding: .35rem 0; }
+
+    /* ---------- 논문 목록 (왼쪽 색깔 배지) ---------- */
+    ol.bibliography { list-style: none; padding: 0; margin: 0; }
+    ol.bibliography > li { display: flex; gap: 1rem; padding: .9rem 0; border-bottom: 1px solid var(--divider); }
+    ol.bibliography > li:last-child { border-bottom: 0; }
+    .abbr { flex: 0 0 110px; }
+    .abbr .badge {
+      display: block; text-align: center; color: #fff; font-size: .78rem; font-weight: 500;
+      padding: .3rem .2rem; border-radius: 4px; letter-spacing: .02em;
+    }
+    .abbr .badge a { color: #fff; }
+    .pub .title { font-weight: 500; }
+    .pub .author { font-size: .92rem; }
+    .pub .author em { font-style: normal; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
+    .pub .periodical { font-size: .92rem; color: var(--muted); }
+    .pub .periodical em { font-style: italic; }
+    .links { margin-top: .4rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+    .btn {
+      font-size: .72rem; text-transform: uppercase; padding: .15rem .55rem;
+      border: 1px solid var(--text); border-radius: 3px; color: var(--text);
+      background: none; cursor: pointer; font-family: inherit; letter-spacing: .03em;
+    }
+    .btn:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+    .abstract { display: none; font-size: .9rem; margin-top: .6rem; padding: .7rem .9rem; border: 1px dashed var(--divider); border-radius: 4px; }
+    .abstract.open { display: block; }
+    @media (max-width: 576px) {
+      ol.bibliography > li { flex-direction: column; gap: .4rem; }
+      .abbr { flex-basis: auto; width: 110px; }
+    }
+
+    /* ---------- 프로젝트 카드 ---------- */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    .card {
+      display: block; background: var(--card); color: var(--text);
+      border: 1px solid var(--divider); border-radius: 6px; padding: 1rem 1.1rem;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .card:hover { text-decoration: none; box-shadow: 0 4px 14px rgba(0,0,0,.12); transform: translateY(-2px); }
+    .card h3 { margin: 0 0 .3rem; color: var(--accent); }
+    .card p { margin: 0; font-size: .9rem; }
+    .card .tag { display: inline-block; margin-top: .6rem; font-size: .72rem; color: var(--muted); }
+
+    ul.plain { padding-left: 1.2rem; margin: .3rem 0; }
+    ul.plain li { margin: .25rem 0; }
+    .muted { color: var(--muted); }
+    .small { font-size: .9rem; }
+    .todo { background: var(--todo-bg); color: var(--todo-fg); border-radius: 3px; padding: 0 .35rem; font-size: .75rem; font-weight: 400; }
+
+    /* ---------- 아래 아이콘 줄과 꼬리말 ---------- */
+    .social { text-align: center; margin: 3rem 0 1rem; }
+    .contact-icons { font-size: 2rem; display: flex; justify-content: center; flex-wrap: wrap; gap: .9rem; }
+    .contact-icons a { color: var(--text); }
+    .contact-icons a:hover { color: var(--accent); text-decoration: none; }
+    .contact-note { color: var(--muted); font-size: .9rem; margin-top: .6rem; }
+    footer { border-top: 1px solid var(--divider); color: var(--muted); font-size: .8rem; text-align: center; padding: 1.2rem 16px 2rem; margin-top: 2rem; }
+    footer a { color: var(--muted); text-decoration: underline; }
+  </style>
+
+  <!--
+    기계가 읽는 사람 정보 (JSON-LD, schema.org).
+    Person 하나와 논문(ScholarlyArticle)들을 @id로 서로 이어 놓은 작은 지식그래프.
+    sameAs 는 "다른 사이트의 이 사람도 같은 사람"이라는 동일성 링크.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://sakjaelim.github.io/#me",
+        "name": "SakJae Lim",
+        "alternateName": ["임석제", "Seok-Jae Lim", "Sak-Jae Lim", "Seok-Je Lim", "Seokje Lim", "Lim, SakJae"],
+        "givenName": "SakJae",
+        "familyName": "Lim",
+        "url": "https://sakjaelim.github.io/",
+        "image": "https://sakjaelim.github.io/assets/profile.jpg",
+        "email": "mailto:lim.aicpa.ds@stud.assist.ac.kr",
+        "jobTitle": ["Ph.D. Student in AI Convergence", "AX Strategy & IT Consultant", "Lecturer"],
+        "identifier": {
+          "@type": "PropertyValue",
+          "propertyID": "ORCID",
+          "value": "0009-0006-4040-6509",
+          "url": "https://orcid.org/0009-0006-4040-6509"
+        },
+        "alumniOf": [
+          {"@type": "CollegeOrUniversity", "name": "Chungnam National University", "alternateName": "충남대학교"},
+          {"@id": "https://sakjaelim.github.io/#assist"}
+        ],
+        "affiliation": [
+          {"@id": "https://sakjaelim.github.io/#assist"},
+          {"@id": "https://sakjaelim.github.io/#ai-ts-lab"}
+        ],
+        "knowsAbout": [
+          "Ontology",
+          "Knowledge graphs",
+          "Linked Open Data",
+          "Explainable AI",
+          "Public data quality",
+          "Public procurement",
+          "Large language models",
+          "Trustworthiness of generative AI",
+          "Financial time-series forecasting",
+          "AI transformation (AX) strategy"
+        ],
+        "sameAs": [
+          "https://orcid.org/0009-0006-4040-6509",
+          "https://scholar.google.com/citations?user=IWgzQeEAAAAJ",
+          "https://openreview.net/profile?id=~SAKJAE_LIM1",
+          "https://www.researchgate.net/profile/Sak-Jae-Lim",
+          "https://www.linkedin.com/in/seok-jae-l-772836b5/",
+          "https://github.com/SakJaeLim",
+          "https://huggingface.co/AICPADSLIM",
+          "https://www.dbpia.co.kr/author/authorDetail?ancId=641195966",
+          "https://www.kci.go.kr/kciportal/po/citationindex/poCretDetail.kci?citationBean.cretId=CRT003551604"
+        ]
+      },
+      {
+        "@type": "CollegeOrUniversity",
+        "@id": "https://sakjaelim.github.io/#assist",
+        "name": "aSSIST University (Seoul School of Integrated Sciences and Technologies)",
+        "alternateName": "서울과학종합대학원대학교",
+        "department": {"@type": "Organization", "name": "Seoul AI School, AI Convergence"}
+      },
+      {
+        "@type": "ResearchOrganization",
+        "@id": "https://sakjaelim.github.io/#ai-ts-lab",
+        "name": "AI & Time-Series Lab",
+        "url": "https://www.researchgate.net/lab/AI-Time-Series-Lab-Nak-Hyun-Jung",
+        "parentOrganization": {"@id": "https://sakjaelim.github.io/#assist"}
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "@id": "https://doi.org/10.7469/jksqm.2026.54.3.457",
+        "headline": "Evaluating Grounded Alignment of LLM Explanations in Financial Risk Early Warning: A Prediction–Explanation Separation Framework",
+        "alternativeHeadline": "금융 리스크 조기경보에서 LLM 설명의 근거 정합성 평가 : 예측-설명 분리형 프레임워크",
+        "keywords": ["Financial Time Series", "High-volatility Regime", "Large Language Model", "Explainable AI", "Grounded Evidence Alignment"],
+        "author": [
+          {"@id": "https://sakjaelim.github.io/#me"},
+          {"@type": "Person", "name": "Nak Hyun Jung", "sameAs": "https://orcid.org/0009-0007-7390-1714"}
+        ],
+        "datePublished": "2026-09",
+        "isPartOf": {
+          "@type": "PublicationIssue",
+          "issueNumber": "3",
+          "isPartOf": {
+            "@type": "PublicationVolume",
+            "volumeNumber": "54",
+            "isPartOf": {"@type": "Periodical", "name": "Journal of Korean Society for Quality Management", "issn": ["1229-1889", "2287-9005"]}
+          }
+        },
+        "pagination": "457-476",
+        "sameAs": "https://doi.org/10.7469/jksqm.2026.54.3.457"
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "@id": "https://doi.org/10.48550/arXiv.2608.29136",
+        "additionalType": "Preprint",
+        "headline": "Not the Same Protector: Deployment-Dependent Protective Intervention in LLMs",
+        "author": [
+          {"@type": "Person", "name": "Eunna Lee"},
+          {"@type": "Person", "name": "Soomyoung Lee"},
+          {"@type": "Person", "name": "Jungpyo Nam"},
+          {"@type": "Person", "name": "Heonjin Ha"},
+          {"@type": "Person", "name": "Jamin Jung"},
+          {"@type": "Person", "name": "Kyunam Choi"},
+          {"@type": "Person", "name": "Sunjun Hwang"},
+          {"@type": "Person", "name": "Yeonghun Kim"},
+          {"@id": "https://sakjaelim.github.io/#me"}
+        ],
+        "datePublished": "2026-08-29",
+        "publisher": {"@type": "Organization", "name": "arXiv"},
+        "sameAs": "https://arxiv.org/abs/2608.29136"
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+
+  <!-- ===== 위쪽 고정 메뉴 ===== -->
+  <nav class="top" aria-label="Main">
+    <div class="container">
+      <a class="brand notranslate" translate="no" href="#top"><b>SakJae</b> Lim</a>
+      <button id="menu-btn" aria-label="Open menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+      <ul class="menu" id="menu">
+        <li><a href="#top">About</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#teaching">Teaching</a></li>
+        <li><a href="#cv">CV</a></li>
+        <li class="notranslate" translate="no">
+          <select id="lang" aria-label="Language" title="Language (machine translation)">
+            <option value="en">English</option>
+            <option value="ko">한국어</option>
+            <option value="zh-CN">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ar">العربية</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </li>
+        <li><button id="theme-toggle" title="Change theme" aria-label="Change theme"><i class="fa-solid fa-circle-half-stroke"></i></button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container" id="top">
+
+    <!-- ===== 머리말 ===== -->
+    <header>
+      <h1 class="post-title notranslate" translate="no"><b>SakJae</b> Lim<span class="ko">임석제</span></h1>
+      <p class="desc">
+        Ph.D. Student, <a href="https://www.assist.ac.kr/" target="_blank" rel="noopener noreferrer">AI Convergence, Seoul AI School, aSSIST University</a>
+      </p>
+    </header>
+
+    <!-- ===== About ===== -->
+    <article>
+      <div class="profile">
+        <!-- 사진은 assets/profile.jpg 에 두면 자동으로 뜬다. 없으면 SL 동그라미가 대신 보인다 -->
+        <img class="photo" src="assets/profile.jpg" alt="SakJae Lim"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="initials">SL</div>
+        <div class="more-info">
+          <p>AI &amp; Time-Series Lab</p>
+          <p>aSSIST University</p>
+          <p>Seoul, Republic of Korea</p>
+        </div>
+      </div>
+
+      <div class="clearfix">
+        <p>
+          I am a Ph.D. student in AI Convergence at the Seoul AI School, aSSIST University,
+          and a member of the <a href="https://www.researchgate.net/lab/AI-Time-Series-Lab-Nak-Hyun-Jung" target="_blank" rel="noopener noreferrer">AI &amp; Time-Series Lab</a>
+          led by Prof. Nak Hyun Jung. I hold an M.S. in AI and Big Data Engineering from aSSIST.
+          Alongside my doctoral study, I work as an IT consultant on public-sector AX (AI transformation)
+          strategy and information strategy planning (ISP/ISMP), and I teach corporate AI courses.
+        </p>
+        <p>
+          My research asks how AI systems can stay grounded in evidence that people can check.
+          I build ontology and knowledge-graph–based AI systems, study whether LLM explanations stay
+          faithful to the evidence they were given, and work on the quality of public and linked open data.
+        </p>
+
+        <p><b>Research Interests</b></p>
+        <ul class="plain">
+          <li>Ontology, knowledge graphs, and Linked Open Data</li>
+          <li>Explainable and trustworthy AI, LLM evaluation</li>
+          <li>Public data quality and public procurement</li>
+          <li>Financial time-series forecasting</li>
+        </ul>
+
+        <p class="small">
+          Full CV: <a href="#cv">Education, experience, and credentials</a>
+        </p>
+      </div>
+    </article>
+
+    <!-- ===== News ===== -->
+    <h2 id="news">News</h2>
+    <table class="news">
+      <tr>
+        <th scope="row">Oct 2026</th>
+        <td>Served as a reviewer for the AI Frontier program of the Korea Agro-Fisheries &amp; Food Trade Corporation (aT), evaluating 27 project reports.</td>
+      </tr>
+      <tr>
+        <th scope="row">Sep 2026</th>
+        <td>Started the Ph.D. program in AI Convergence at aSSIST University.</td>
+      </tr>
+      <tr>
+        <th scope="row">Sep 2026</th>
+        <td>Paper published in <em>Journal of Korean Society for Quality Management</em> 54(3) on grounded alignment of LLM explanations in financial risk early warning.</td>
+      </tr>
+      <tr>
+        <th scope="row">Aug 2026</th>
+        <td>Preprint released on arXiv: <em>Not the Same Protector: Deployment-Dependent Protective Intervention in LLMs</em>.</td>
+      </tr>
+      <tr>
+        <th scope="row">Aug 2026</th>
+        <td>Credited as a contributor in the <a href="https://github.com/CommonCoreOntology/CommonCoreOntologies/releases" target="_blank" rel="noopener noreferrer">Common Core Ontologies 2.2</a> release.</td>
+      </tr>
+    </table>
+
+    <!-- ===== Publications ===== -->
+    <h2 id="publications">Publications</h2>
+
+    <h3>Journal Articles</h3>
+    <ol class="bibliography">
+      <li>
+        <div class="abbr notranslate" translate="no">
+          <span class="badge" style="background:#00369f">
+            <a href="https://www.ksqm.org/" target="_blank" rel="noopener noreferrer">JKSQM</a>
+          </span>
+        </div>
+        <div class="pub">
+          <div class="title notranslate" translate="no">Evaluating Grounded Alignment of LLM Explanations in Financial Risk Early Warning: A Prediction–Explanation Separation Framework</div>
+          <div class="author notranslate" translate="no"><em>SakJae Lim</em>, and Nak Hyun Jung</div>
+          <div class="periodical notranslate" translate="no"><em>Journal of Korean Society for Quality Management</em>, 54(3), 457–476, Sep 2026</div>
+          <div class="links">
+            <button class="btn" data-abs="abs-jksqm">Abs</button>
+            <a class="btn" href="https://doi.org/10.7469/jksqm.2026.54.3.457" target="_blank" rel="noopener noreferrer">DOI</a>
+            <a class="btn" href="https://kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART003384141" target="_blank" rel="noopener noreferrer">KCI</a>
+          </div>
+          <div class="abstract" id="abs-jksqm">
+            This study proposes a large language model (LLM) framework that separates prediction from explanation
+            for early warning of high-volatility regimes in the Korean stock market: a dedicated model issues the forecast
+            and an LLM produces auditable, evidence-grounded explanations. The predictor's probability, SHAP attributions,
+            a market-state summary, and a risk-factor taxonomy form a Structured Evidence Packet that is the LLM's only input.
+            Explanation quality is assessed with a Grounded Evidence Alignment Score (GEAS), repetition stability, input ablation,
+            and deletion/injection interventions. GEAS rose from 0.183 without SHAP evidence to 1.000/0.998 with it, and the
+            dedicated model reached PR-AUC 0.799 against 0.615 for direct LLM prediction. The findings support using LLMs as
+            grounded, auditable explanation layers rather than autonomous forecasters.
+          </div>
+        </div>
+      </li>
+    </ol>
+
+    <h3>Preprints</h3>
+    <ol class="bibliography">
+      <li>
+        <div class="abbr notranslate" translate="no">
+          <span class="badge" style="background:#b31b1b">
+            <a href="https://arxiv.org/" target="_blank" rel="noopener noreferrer">arXiv</a>
+          </span>
+        </div>
+        <div class="pub">
+          <div class="title notranslate" translate="no">Not the Same Protector: Deployment-Dependent Protective Intervention in LLMs</div>
+          <div class="author notranslate" translate="no">Eunna Lee, Soomyoung Lee, Jungpyo Nam, Heonjin Ha, Jamin Jung, Kyunam Choi, Sunjun Hwang, Yeonghun Kim, and <em>Seok-Jae Lim</em></div>
+          <div class="periodical notranslate" translate="no"><em>arXiv preprint</em> arXiv:2608.29136, Aug 2026</div>
+          <div class="links">
+            <a class="btn" href="https://arxiv.org/abs/2608.29136" target="_blank" rel="noopener noreferrer">arXiv</a>
+            <a class="btn" href="https://arxiv.org/pdf/2608.29136" target="_blank" rel="noopener noreferrer">PDF</a>
+          </div>
+        </div>
+      </li>
+    </ol>
+    <p class="small muted">
+      Full list on <a href="https://scholar.google.com/citations?user=IWgzQeEAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+      and <a href="https://orcid.org/0009-0006-4040-6509" target="_blank" rel="noopener noreferrer">ORCID</a>.
+    </p>
+
+    <!-- ===== Projects ===== -->
+    <h2 id="projects">Projects</h2>
+    <div class="cards">
+      <a class="card" href="https://github.com/SakJaeLim/trustflow-mcp-data-agent" target="_blank" rel="noopener noreferrer">
+        <h3 class="notranslate" translate="no">TrustFlow MCP</h3>
+        <p>Policy-gated SQL, vector, and knowledge-graph data agent. Plans are allowed, revised, held for approval, or blocked before execution, with evidence-linked answers and audit records.</p>
+        <span class="tag notranslate" translate="no">TypeScript · PostgreSQL · pgvector · MCP</span>
+      </a>
+      <a class="card" href="https://github.com/SakJaeLim/paperops" target="_blank" rel="noopener noreferrer">
+        <h3 class="notranslate" translate="no">PaperOps</h3>
+        <p>Local-first research workflow with traceable evidence, guarded manuscript edits, and human verification gates.</p>
+        <span class="tag notranslate" translate="no">Python · SQLite</span>
+      </a>
+      <a class="card" href="https://github.com/SakJaeLim/hps-project" target="_blank" rel="noopener noreferrer">
+        <h3 class="notranslate" translate="no">Container Terminal Decision Support</h3>
+        <p>Ontology-based decision support MVP for container terminal operations: Neo4j ontology, LangGraph agents, load planning, and a domain SLM with RAG. Includes PortSLM, a team-built vision-language model fine-tuned from Qwen2.5-VL-3B.</p>
+        <span class="tag notranslate" translate="no">Neo4j · LangGraph · LoRA · RAG</span>
+      </a>
+      <a class="card" href="https://github.com/SakJaeLim/filename-rescue" target="_blank" rel="noopener noreferrer">
+        <h3 class="notranslate" translate="no">filename-rescue</h3>
+        <p>Windows utility that detects and safely repairs Unicode-decomposed Korean filenames, with preview and collision checks.</p>
+        <span class="tag notranslate" translate="no">Python</span>
+      </a>
+      <a class="card" href="https://github.com/SakJaeLim/Knowledge-Navigator" target="_blank" rel="noopener noreferrer">
+        <h3 class="notranslate" translate="no">Knowledge Navigator</h3>
+        <p>Enterprise document search and document automation agent.</p>
+        <span class="tag notranslate" translate="no">Agent · Search</span>
+      </a>
+    </div>
+
+    <!-- 병합(merged)된 PR만 싣는다. 열려 있거나 닫힌 PR은 넣지 않는다 -->
+    <h3 style="margin-top:1.8rem">Open Source Contributions</h3>
+    <ul class="plain small">
+      <li>
+        <b>Common Core Ontologies</b>: revised the definition of <em>Government Domain Border</em>
+        (<a href="https://github.com/CommonCoreOntology/CommonCoreOntologies/pull/889" target="_blank" rel="noopener noreferrer">#889</a>, merged Jun 2026). Credited in release 2.2.
+      </li>
+      <li>
+        <b>factlog</b>: fixed subprocess decoding on non-UTF-8 Windows locales
+        (<a href="https://github.com/semantic-reasoning/factlog/pull/138" target="_blank" rel="noopener noreferrer">#138</a>)
+        and enforced LF line endings for shell scripts
+        (<a href="https://github.com/semantic-reasoning/factlog/pull/142" target="_blank" rel="noopener noreferrer">#142</a>), merged Jun 2026.
+      </li>
+      <li>
+        <b>Xazz</b> (Rust AI pipeline DSL): Policy-as-Code static guardrails and an sLM code-correction API
+        (<a href="https://github.com/x1zzdev/Xazz/pull/8" target="_blank" rel="noopener noreferrer">#8</a>),
+        and a reproducible demo-video pipeline
+        (<a href="https://github.com/x1zzdev/Xazz/pull/19" target="_blank" rel="noopener noreferrer">#19</a>,
+        <a href="https://github.com/x1zzdev/Xazz/pull/20" target="_blank" rel="noopener noreferrer">#20</a>), merged Aug 2026.
+      </li>
+    </ul>
+
+    <!-- ===== Teaching ===== -->
+    <h2 id="teaching">Teaching &amp; Service</h2>
+    <table class="news">
+      <tr>
+        <th scope="row">2026 –</th>
+        <td>
+          <b>AI Partner Instructor</b> (6th cohort), Ablearn.
+          Developed a three-part Claude Code curriculum: file-based work, evidence-checked report automation, and subagent team design.
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Oct 2026</th>
+        <td>
+          <b>Reviewer</b>, AI Frontier program, Korea Agro-Fisheries &amp; Food Trade Corporation (aT).
+          Evaluated 27 employee AI project reports.
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">2026.01 – 06</th>
+        <td>
+          <b>Corporate AI Education Technical Tutor</b>, Sparta Coding Club (TeamSparta).
+          Supported executive and enterprise programs, including Lotte Group executive AI education and POSCO DX hackathon activities,
+          with hands-on sessions on LLM workflows, prompt design, and AI-agent prototyping.
+        </td>
+      </tr>
+    </table>
+
+    <!-- ===== CV ===== -->
+    <h2 id="cv">CV</h2>
+
+    <h3>Education</h3>
+    <table class="news">
+      <tr>
+        <th scope="row">2026 –</th>
+        <td><b>Ph.D. Student</b>, AI Convergence, Seoul AI School, aSSIST University</td>
+      </tr>
+      <tr>
+        <th scope="row">2025 – 2026</th>
+        <td>
+          <b>M.S.</b>, AI and Big Data Engineering, aSSIST University<br />
+          <span class="small muted">Research: auditable explanation layers and model evaluation for financial time-series classification</span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">2008 – 2019</th>
+        <td>
+          <b>B.B.A.</b>, International Business (second major: Chinese Language and Literature), Chungnam National University<br />
+          <span class="small muted">Exchange student, Dongbei University of Finance and Economics, Dalian, China (11 months)</span>
+        </td>
+      </tr>
+    </table>
+
+    <h3>Experience</h3>
+    <table class="news">
+      <tr>
+        <th scope="row">2026 –</th>
+        <td>
+          <b>Senior Researcher / IT Consultant</b>, Strategy Planning Office, LIST Co., Ltd.<br />
+          <span class="small">Public-sector ISP/ISMP, AI/AX strategy, business analysis, and technical architecture.
+          Reusable concepts for ontology, knowledge graphs, GraphRAG, AI-ready data, and AI governance.</span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">2025</th>
+        <td>
+          <b>Data Strategy Consultant</b>, TUI Consulting<br />
+          <span class="small">Supported Korea's Fifth National Core Data Opening Plan (legal and institutional analysis, demand research,
+          prioritization of AI-friendly high-value data). Public-data quality diagnostics with WDQ.</span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Earlier</th>
+        <td class="small">
+          Co-founding team member at Birdlog (business planning and operations).
+          Strategy and new-business roles at Bizblocks, Jeil Education, and Posedu (2015 – 2018).
+        </td>
+      </tr>
+    </table>
+
+    <h3>Credentials</h3>
+    <ul class="plain small">
+      <li>U.S. CPA Examination: all four sections passed (2024)</li>
+      <li>ADsP, Advanced Data Analytics Semi-Professional (2025)</li>
+      <li>Neo4j Fundamentals (2026)</li>
+      <li>Investment Asset Manager, Korea (2024)</li>
+      <li>Information Processing Craftsman, Korea</li>
+    </ul>
+
+    <h3>Training &amp; Recognition</h3>
+    <ul class="plain small">
+      <li>AI Native CEO Program, 2nd cohort, Seoul AI Hub (2026)</li>
+      <li>UNITAR / EPFL Geneva residential program on AI, operational excellence, and sustainable development (2026)</li>
+      <li>MultiCampus Data Analyst Bootcamp: Python, SQL, ML/DL, NLP (2024 – 2025)</li>
+      <li>English Presentation Contest, Encouragement Award, Chungnam National University (2015)</li>
+    </ul>
+
+    <h3>Skills &amp; Languages</h3>
+    <ul class="plain small">
+      <li>Python, SQL, Neo4j/Cypher, RDF, OWL, SPARQL, SHACL, PostgreSQL, LangGraph, FastAPI, Docker, Tableau</li>
+      <li>Korean (native) · English (OPIc AL, TOEIC 860) · Chinese (conversational)</li>
+    </ul>
+
+    <!-- ===== 아래 아이콘 줄 ===== -->
+    <div class="social">
+      <div class="contact-icons notranslate" translate="no">
+        <a href="mailto:%6C%69%6D.%61%69%63%70%61.%64%73@%73%74%75%64.%61%73%73%69%73%74.%61%63.%6B%72" title="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://orcid.org/0009-0006-4040-6509" title="ORCID" target="_blank" rel="noopener noreferrer"><i class="ai ai-orcid"></i></a>
+        <a href="https://scholar.google.com/citations?user=IWgzQeEAAAAJ" title="Google Scholar" target="_blank" rel="noopener noreferrer"><i class="ai ai-google-scholar"></i></a>
+        <a href="https://openreview.net/profile?id=~SAKJAE_LIM1" title="OpenReview" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-book-open"></i></a>
+        <a href="https://www.researchgate.net/profile/Sak-Jae-Lim" title="ResearchGate" target="_blank" rel="noopener noreferrer"><i class="ai ai-researchgate"></i></a>
+        <a href="https://github.com/SakJaeLim" title="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/seok-jae-l-772836b5/" title="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://huggingface.co/AICPADSLIM" title="Hugging Face" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-face-smile"></i></a>
+      </div>
+      <div class="contact-note">For the best response, please contact me via email.</div>
+    </div>
+  </main>
+
+  <footer>
+    © <span id="y"></span> <span class="notranslate" translate="no">SakJae Lim</span>. Design inspired by the <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme.
+    Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>.
+    · <a href="links.html">All links</a>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // 테마 버튼: 시스템 -> 다크 -> 라이트 -> 시스템 순서로 돈다 (al-folio 방식)
+    (function () {
+      var root = document.documentElement;
+      var btn = document.getElementById('theme-toggle');
+      var icon = btn.querySelector('i');
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var icons = { system: 'fa-circle-half-stroke', dark: 'fa-moon', light: 'fa-sun' };
+      var titles = { system: 'Theme: system', dark: 'Theme: dark', light: 'Theme: light' };
+
+      function apply(setting) {
+        var dark = setting === 'dark' || (setting === 'system' && mq.matches);
+        root.setAttribute('data-theme', dark ? 'dark' : 'light');
+        root.setAttribute('data-theme-setting', setting);
+        icon.className = 'fa-solid ' + icons[setting];
+        btn.title = titles[setting];
+        try { localStorage.setItem('theme', setting); } catch (e) {}
+      }
+      apply(root.getAttribute('data-theme-setting') || 'system');
+
+      btn.addEventListener('click', function () {
+        var order = ['system', 'dark', 'light'];
+        var cur = root.getAttribute('data-theme-setting') || 'system';
+        apply(order[(order.indexOf(cur) + 1) % order.length]);
+      });
+      mq.addEventListener('change', function () {
+        if (root.getAttribute('data-theme-setting') === 'system') apply('system');
+      });
+    })();
+
+    // 모바일 메뉴 열고 닫기
+    (function () {
+      var btn = document.getElementById('menu-btn');
+      var menu = document.getElementById('menu');
+      btn.addEventListener('click', function () {
+        var open = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open);
+      });
+      menu.addEventListener('click', function (e) {
+        if (e.target.closest('a')) menu.classList.remove('open');
+      });
+    })();
+
+    // 언어 선택: 영어가 원문. 다른 언어를 고를 때만 Google 번역 스크립트를 불러온다
+    (function () {
+      var sel = document.getElementById('lang');
+
+      // 탭 제목은 번역 금지 표시가 안 먹는다. 이름이 엉뚱하게 번역되면 원래 제목으로 되돌린다
+      var originalTitle = document.title;
+      new MutationObserver(function () {
+        if (document.title !== originalTitle) document.title = originalTitle;
+      }).observe(document.querySelector('title'), { childList: true, characterData: true, subtree: true });
+      var holder = document.createElement('div');
+      holder.id = 'google_translate_element';
+      holder.style.display = 'none';
+      document.body.appendChild(holder);
+
+      function waitCombo(cb, tries) {
+        var c = document.querySelector('.goog-te-combo');
+        if (c) return cb(c);
+        if ((tries || 0) > 100) return;   // 10초 넘게 안 뜨면 포기 (오프라인 등)
+        setTimeout(function () { waitCombo(cb, (tries || 0) + 1); }, 100);
+      }
+      function loadTranslator(cb) {
+        if (window.google && google.translate && google.translate.TranslateElement) return waitCombo(cb);
+        window.gtInit = function () {
+          new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ko,zh-CN,ja,ar,fr,es,de',
+            autoDisplay: false
+          }, 'google_translate_element');
+          waitCombo(cb);
+        };
+        var s = document.createElement('script');
+        s.src = 'https://translate.google.com/translate_a/element.js?cb=gtInit';
+        document.head.appendChild(s);
+      }
+      function setLang(lang, first) {
+        try { localStorage.setItem('lang', lang); } catch (e) {}
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        if (lang === 'en') {
+          // 원문으로 돌아갈 때는 번역 쿠키를 지우고 새로고침하는 게 가장 깔끔하다
+          var translated = /translated-(ltr|rtl)/.test(document.documentElement.className);
+          if (!first && translated) {
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=' + location.hostname;
+            location.reload();
+          }
+          return;
+        }
+        loadTranslator(function (combo) {
+          // 위젯이 막 생긴 직후의 첫 신호는 무시되는 경우가 있어서, 번역이 안 됐으면 다시 보낸다
+          var tries = 0;
+          (function kick() {
+            combo.value = lang;
+            combo.dispatchEvent(new Event('change'));
+            setTimeout(function () {
+              var done = /translated-(ltr|rtl)/.test(document.documentElement.className);
+              if (!done && ++tries < 5) kick();
+            }, 700);
+          })();
+        });
+      }
+
+      var saved = 'en';
+      try { saved = localStorage.getItem('lang') || 'en'; } catch (e) {}
+      sel.value = saved;
+      if (saved !== 'en') setLang(saved, true);
+      sel.addEventListener('change', function () { setLang(sel.value, false); });
+    })();
+
+    // 논문 초록(Abs) 펼치기
+    document.querySelectorAll('[data-abs]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.getElementById(b.getAttribute('data-abs')).classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>
