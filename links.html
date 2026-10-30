@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>SakJae Lim · Links</title>
   <meta name="description" content="All links for SakJae Lim (임석제): homepage, papers, Google Scholar, ORCID, GitHub, LinkedIn." />
   <link rel="canonical" href="https://sakjaelim.github.io/links" />
   <meta property="og:type" content="profile" />
   <meta property="og:title" content="SakJae Lim (임석제) · Links" />
-  <meta property="og:description" content="Ontology, Knowledge Graphs & Trustworthy AI. Ph.D. student, aSSIST University." />
+  <meta property="og:description" content="Researcher and practitioner: evidence-grounded AI, ontology, and public-sector IT consulting." />
   <meta property="og:url" content="https://sakjaelim.github.io/links" />
-  <meta property="og:image" content="https://sakjaelim.github.io/assets/profile.jpg" />
+  <meta property="og:image" content="https://sakjaelim.github.io/assets/portrait.jpg" />
+  <meta name="theme-color" content="#f6f6f4" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
 
   <!-- 본 홈페이지와 같은 테마 설정(localStorage 'theme')을 같이 쓴다 -->
   <script>
@@ -24,131 +26,143 @@
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@300;700&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300..700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css" />
 
   <style>
+    /* 본 홈페이지(시안 C)와 같은 무채색 토큰 */
     :root, [data-theme="light"] {
-      --bg: #f7f5f8; --text: #111; --muted: #707070; --accent: #b509ac;
-      --btn: #ffffff; --btn-border: rgba(0,0,0,.08); --btn-hover: #fbeffa;
+      --bg: #f6f6f4; --surface: #ffffff; --surface-2: #eeeeeb; --ink: #0d0e10; --ink-2: #565a61;
+      --line: rgba(13, 14, 16, .10); --line-2: rgba(13, 14, 16, .20);
+      --shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 32px rgba(0,0,0,.06);
     }
     [data-theme="dark"] {
-      --bg: #1c1c1d; --text: #e8e8e8; --muted: #9a9a9a; --accent: #2698ba;
-      --btn: #26272b; --btn-border: #3a3b40; --btn-hover: #1f3a44;
+      --bg: #0a0a0b; --surface: #111214; --surface-2: #18191c; --ink: #ededed; --ink-2: #9a9ea6;
+      --line: rgba(255, 255, 255, .08); --line-2: rgba(255, 255, 255, .18);
+      --shadow: 0 1px 2px rgba(0,0,0,.5), 0 16px 40px rgba(0,0,0,.45);
+    }
+    :root {
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      --sans: "Host Grotesk", "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     }
     * { box-sizing: border-box; }
     body {
-      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
-      font-family: Roboto, "Noto Sans KR", Arial, sans-serif; font-weight: 300;
-      display: flex; justify-content: center; transition: background-color .2s, color .2s;
+      margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink);
+      font-family: var(--sans); -webkit-font-smoothing: antialiased;
+      display: flex; justify-content: center; transition: background-color .4s var(--ease), color .4s var(--ease);
     }
-    .wrap { width: 100%; max-width: 560px; padding: 48px 16px 32px; text-align: center; }
+    ::selection { background: var(--ink); color: var(--bg); }
+    :focus-visible { outline: 1.5px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+    .wrap { width: 100%; max-width: 520px; padding: 56px 16px calc(32px + env(safe-area-inset-bottom)); }
 
     #theme-toggle {
-      position: fixed; top: 14px; right: 14px; background: none; border: 0;
-      color: var(--text); font-size: 1.1rem; cursor: pointer; padding: 6px;
+      position: fixed; top: 14px; right: 14px; width: 40px; height: 40px; display: grid; place-items: center;
+      border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; cursor: pointer;
+      transition: border-color .25s var(--ease);
     }
-    #theme-toggle:hover { color: var(--accent); }
+    #theme-toggle:hover { border-color: var(--line-2); }
 
-    .avatar, .initials {
-      width: 112px; height: 112px; border-radius: 50%; margin: 0 auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,.15);
-    }
-    .avatar { object-fit: cover; display: block; }
-    .initials {
-      display: none; align-items: center; justify-content: center;
-      font-family: "Roboto Slab", serif; font-size: 2.4rem; color: var(--accent); background: var(--btn);
-    }
-    h1 { font-family: "Roboto Slab", serif; font-weight: 700; font-size: 1.6rem; margin: 1rem 0 0; }
-    h1 .ko { font-family: "Noto Sans KR", sans-serif; font-weight: 400; font-size: 1.1rem; color: var(--muted); margin-left: .3rem; }
-    .bio { color: var(--muted); font-size: .95rem; margin: .4rem 0 1.6rem; line-height: 1.5; }
+    .head { display: grid; grid-template-columns: 88px 1fr; gap: 20px; align-items: center; }
+    .photo { width: 88px; aspect-ratio: 4 / 5; border-radius: 10px; overflow: hidden; background: var(--surface-2); box-shadow: var(--shadow); }
+    .photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) contrast(1.04); transition: filter 1.2s var(--ease); }
+    .photo:hover img { filter: grayscale(0); }
+    h1 { margin: 0; font-size: 1.8rem; line-height: 1.05; font-weight: 600; letter-spacing: -.035em; }
+    h1 .ko { display: block; margin-top: 6px; font-size: .95rem; font-weight: 400; color: var(--ink-2); font-family: "Pretendard Variable", Pretendard, sans-serif; letter-spacing: .02em; }
+    .claim { margin: 24px 0 8px; font-size: 1rem; line-height: 1.5; letter-spacing: -.01em; }
 
-    .group { margin: 1.4rem 0 .6rem; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .group { margin: 32px 0 10px; font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
     a.link {
-      display: flex; align-items: center; gap: .8rem;
-      background: var(--btn); color: var(--text); text-decoration: none;
-      border: 1px solid var(--btn-border); border-radius: 12px;
-      padding: .85rem 1rem; margin: .6rem 0; font-weight: 400; text-align: left;
-      transition: transform .15s, background-color .15s, border-color .15s;
+      display: flex; align-items: center; gap: 14px; margin: 8px 0; padding: 14px 16px;
+      background: var(--surface); color: var(--ink); text-decoration: none;
+      border: 1px solid var(--line); border-radius: 12px;
+      transition: background-color .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease), transform .5s var(--ease);
     }
-    a.link:hover { transform: translateY(-2px); background: var(--btn-hover); border-color: var(--accent); }
-    a.link i { width: 1.4rem; text-align: center; font-size: 1.2rem; color: var(--accent); flex-shrink: 0; }
-    a.link .label { flex: 1; }
-    a.link .sub { display: block; font-size: .78rem; color: var(--muted); font-weight: 300; margin-top: .1rem; }
-    a.link.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-    a.link.primary i, a.link.primary .sub { color: #fff; }
-    a.link.primary:hover { filter: brightness(1.08); }
+    a.link:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); transform: translateX(3px); }
+    a.link i { width: 1.3rem; text-align: center; font-size: 1.1rem; flex-shrink: 0; }
+    a.link .label { flex: 1; min-width: 0; font-weight: 500; letter-spacing: -.01em; }
+    a.link .sub { display: block; margin-top: 2px; font-size: .8rem; font-weight: 400; color: var(--ink-2); transition: color .35s var(--ease); }
+    a.link:hover .sub { color: var(--bg); opacity: .75; }
+    a.link .arr { font-family: var(--mono); font-size: .8rem; color: var(--ink-2); transition: color .35s var(--ease), transform .5s var(--ease); }
+    a.link:hover .arr { color: var(--bg); transform: translateX(2px); }
+    a.link.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    a.link.primary .sub, a.link.primary .arr { color: var(--bg); opacity: .75; }
 
-    footer { color: var(--muted); font-size: .75rem; margin-top: 2rem; }
-    footer a { color: var(--muted); }
+    footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); font-size: .8rem; color: var(--ink-2); display: flex; justify-content: space-between; }
+    footer a { color: var(--ink-2); }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .rv { animation: rise .9s var(--ease) backwards; animation-delay: var(--d, 0s); }
+      @keyframes rise { from { opacity: 0; transform: translate3d(0, 14px, 0); } }
+    }
   </style>
 </head>
 <body>
   <button id="theme-toggle" title="Change theme" aria-label="Change theme"><i class="fa-solid fa-circle-half-stroke"></i></button>
 
   <div class="wrap">
-    <!-- 사진은 본 홈페이지와 같은 assets/profile.jpg 를 쓴다 -->
-    <img class="avatar" src="assets/profile.jpg" alt="SakJae Lim"
-         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-    <div class="initials">SL</div>
+    <div class="head rv">
+      <div class="photo"><img src="assets/portrait.jpg" alt="Portrait of SakJae Lim" width="88" height="110" /></div>
+      <h1 class="notranslate" translate="no">SakJae Lim<span class="ko">임석제</span></h1>
+    </div>
+    <p class="claim rv" style="--d:.05s">Researcher and practitioner. I study evidence-grounded AI and put it to work in public-sector IT consulting.</p>
 
-    <h1>SakJae Lim<span class="ko">임석제</span></h1>
-    <p class="bio">
-      Ph.D. Student, AI Convergence · aSSIST University<br />
-      Ontology · Knowledge Graphs · Trustworthy AI
-    </p>
-
-    <a class="link primary" href="./">
+    <a class="link primary rv" style="--d:.1s" href="./">
       <i class="fa-solid fa-house"></i>
-      <span class="label">Homepage<span class="sub">sakjaelim.github.io</span></span>
+      <span class="label">Homepage<span class="sub">sakjaelim.github.io</span></span><span class="arr">→</span>
     </a>
-    <a class="link" href="mailto:%6C%69%6D.%61%69%63%70%61.%64%73@%73%74%75%64.%61%73%73%69%73%74.%61%63.%6B%72">
+    <a class="link rv" style="--d:.13s" href="mailto:%6C%69%6D.%61%69%63%70%61.%64%73@%73%74%75%64.%61%73%73%69%73%74.%61%63.%6B%72">
       <i class="fa-solid fa-envelope"></i>
-      <span class="label">Email<span class="sub">School email</span></span>
+      <span class="label">Email<span class="sub">School email</span></span><span class="arr">→</span>
     </a>
 
-    <div class="group">Research</div>
-    <a class="link" href="https://doi.org/10.7469/jksqm.2026.54.3.457" target="_blank" rel="noopener noreferrer">
+    <div class="group rv" style="--d:.16s">Research</div>
+    <a class="link rv" style="--d:.18s" href="https://doi.org/10.7469/jksqm.2026.54.3.457" target="_blank" rel="noopener noreferrer">
       <i class="fa-solid fa-file-lines"></i>
-      <span class="label">Latest paper (JKSQM, 2026)<span class="sub">Grounded alignment of LLM explanations in financial risk early warning</span></span>
+      <span class="label">Latest paper (JKSQM, 2026)<span class="sub">Grounded alignment of LLM explanations in financial risk early warning</span></span><span class="arr">↗</span>
     </a>
-    <a class="link" href="https://arxiv.org/abs/2608.29136" target="_blank" rel="noopener noreferrer">
+    <a class="link rv" style="--d:.2s" href="https://arxiv.org/abs/2608.29136" target="_blank" rel="noopener noreferrer">
       <i class="ai ai-arxiv"></i>
-      <span class="label">Preprint (arXiv, 2026)<span class="sub">Not the Same Protector: protective intervention in LLMs</span></span>
+      <span class="label">Preprint (arXiv, 2026)<span class="sub">Not the Same Protector: protective intervention in LLMs</span></span><span class="arr">↗</span>
     </a>
-    <a class="link" href="https://scholar.google.com/citations?user=IWgzQeEAAAAJ" target="_blank" rel="noopener noreferrer">
+    <a class="link rv" style="--d:.22s" href="https://scholar.google.com/citations?user=IWgzQeEAAAAJ" target="_blank" rel="noopener noreferrer">
       <i class="ai ai-google-scholar"></i>
-      <span class="label">Google Scholar</span>
+      <span class="label">Google Scholar</span><span class="arr">↗</span>
     </a>
-    <a class="link" href="https://orcid.org/0009-0006-4040-6509" target="_blank" rel="noopener noreferrer">
+    <a class="link rv" style="--d:.24s" href="https://orcid.org/0009-0006-4040-6509" target="_blank" rel="noopener noreferrer">
       <i class="ai ai-orcid"></i>
-      <span class="label">ORCID<span class="sub">0009-0006-4040-6509</span></span>
+      <span class="label">ORCID<span class="sub">0009-0006-4040-6509</span></span><span class="arr">↗</span>
     </a>
-    <a class="link" href="https://www.researchgate.net/profile/Sak-Jae-Lim" target="_blank" rel="noopener noreferrer">
+    <a class="link rv" style="--d:.26s" href="https://www.researchgate.net/profile/Sak-Jae-Lim" target="_blank" rel="noopener noreferrer">
       <i class="ai ai-researchgate"></i>
-      <span class="label">ResearchGate</span>
+      <span class="label">ResearchGate</span><span class="arr">↗</span>
     </a>
-    <a class="link" href="https://openreview.net/profile?id=~SAKJAE_LIM1" target="_blank" rel="noopener noreferrer">
+    <a class="link rv" style="--d:.28s" href="https://openreview.net/profile?id=~SAKJAE_LIM1" target="_blank" rel="noopener noreferrer">
       <i class="fa-solid fa-book-open"></i>
-      <span class="label">OpenReview</span>
+      <span class="label">OpenReview</span><span class="arr">↗</span>
     </a>
 
-    <div class="group">Code &amp; Profile</div>
-    <a class="link" href="https://github.com/SakJaeLim" target="_blank" rel="noopener noreferrer">
+    <div class="group rv" style="--d:.3s">Code &amp; Profile</div>
+    <a class="link rv" style="--d:.32s" href="https://github.com/SakJaeLim" target="_blank" rel="noopener noreferrer">
       <i class="fa-brands fa-github"></i>
-      <span class="label">GitHub<span class="sub">TrustFlow MCP, PaperOps, and more</span></span>
+      <span class="label">GitHub<span class="sub">TrustFlow MCP, PaperOps, and more</span></span><span class="arr">↗</span>
     </a>
-    <a class="link" href="https://huggingface.co/AICPADSLIM" target="_blank" rel="noopener noreferrer">
+    <a class="link rv" style="--d:.34s" href="https://huggingface.co/AICPADSLIM" target="_blank" rel="noopener noreferrer">
       <i class="fa-solid fa-face-smile"></i>
-      <span class="label">Hugging Face</span>
+      <span class="label">Hugging Face</span><span class="arr">↗</span>
     </a>
-    <a class="link" href="https://www.linkedin.com/in/seok-jae-l-772836b5/" target="_blank" rel="noopener noreferrer">
-      <i class="fa-brands fa-linkedin"></i>
-      <span class="label">LinkedIn</span>
+    <a class="link rv" style="--d:.36s" href="https://www.linkedin.com/in/seok-jae-l-772836b5/" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-linkedin-in"></i>
+      <span class="label">LinkedIn</span><span class="arr">↗</span>
     </a>
 
-    <footer>© <span id="y"></span> SakJae Lim · <a href="./">sakjaelim.github.io</a></footer>
+    <footer>
+      <span>© <span id="y"></span> <span class="notranslate" translate="no">SakJae Lim</span></span>
+      <a href="./">sakjaelim.github.io</a>
+    </footer>
   </div>
 
   <script>
