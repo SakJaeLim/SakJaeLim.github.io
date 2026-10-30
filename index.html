@@ -11,7 +11,11 @@
   <meta property="og:title" content="Seokje Lim (임석제)" />
   <meta property="og:description" content="Researcher and practitioner: evidence-grounded AI, ontology, and public-sector IT consulting." />
   <meta property="og:url" content="https://sakjaelim.github.io/" />
-  <meta property="og:image" content="https://sakjaelim.github.io/assets/portrait.jpg" />
+  <meta property="og:image" content="https://sakjaelim.github.io/assets/og-card.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Seokje Lim (임석제): researcher and practitioner. Knowledge graph portfolio." />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#f6f6f4" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
 
@@ -235,6 +239,7 @@
     .kg-canvas.ready { opacity: 1; }
     /* 휴대폰: 평소에는 한 손가락으로 쓸면 페이지가 스크롤된다. 전체화면일 때만 그래프가 손가락을 가져간다 */
     .kg-canvas canvas { display: block; touch-action: pan-y !important; outline: none; }
+    .kg-canvas { touch-action: pan-y; }
     .kg.expanded .kg-canvas canvas { touch-action: none !important; }
     .kg.expanded { position: fixed; inset: 0; z-index: 80; height: auto; margin: 0; border: 0; border-radius: 0; }
     @media all {
@@ -730,7 +735,7 @@
           <button data-f="org" data-ko="기관">Orgs</button>
         </div>
         <div class="legend" aria-hidden="true"></div>
-        <span class="label mhint" data-ko="노드를 누르거나 &lt;i class=&quot;fa-solid fa-expand&quot;&gt;&lt;/i&gt; 버튼으로 크게 보기">Tap a node · <i class="fa-solid fa-expand"></i> to explore</span>
+        <span class="label mhint" data-ko="노드를 끌거나, 두 손가락으로 벌려 확대">Drag a node · pinch to zoom</span>
         <div class="ctrl" role="group" aria-label="Graph view">
           <button data-z="in" aria-label="Zoom in" title="Zoom in"><i class="fa-solid fa-plus"></i></button>
           <button data-z="out" aria-label="Zoom out" title="Zoom out"><i class="fa-solid fa-minus"></i></button>
@@ -960,27 +965,38 @@
     rail.addEventListener('click', function (e) { if (mq.matches && e.target.closest('.nav a')) setOpen(false); });
     mq.addEventListener('change', function () { if (!mq.matches) { setOpen(false); main.inert = false; } });
 
-    // 화면 왼쪽 끝에서 오른쪽으로 쓸면 메뉴가 따라 나온다
-    var ex = null, ey = 0, edx = 0;
+    // 화면 왼쪽 절반 어디서든 오른쪽으로 쓸면 메뉴가 손가락을 따라 나온다.
+    // 처음 몇 px 움직임이 확실히 가로일 때만 잡는다 (세로면 그냥 스크롤)
+    var ex = null, ey = 0, edx = 0, lock = '';
     document.addEventListener('touchstart', function (e) {
-      if (!mq.matches || root.classList.contains('drawer-open') || document.querySelector('.kg.expanded')) return;
-      var t = e.touches[0]; if (t.clientX > 28) return;
-      ex = t.clientX; ey = t.clientY; edx = 0;
+      if (!mq.matches || root.classList.contains('drawer-open') || document.querySelector('.kg.expanded') || e.touches.length > 1) return;
+      if (e.target.closest('.tabs, .kg, input, select, textarea')) return;
+      var t = e.touches[0]; if (t.clientX > window.innerWidth * 0.55) return;
+      ex = t.clientX; ey = t.clientY; edx = 0; lock = '';
     }, { passive: true });
     document.addEventListener('touchmove', function (e) {
       if (ex === null) return;
-      var t = e.touches[0]; edx = t.clientX - ex;
-      if (Math.abs(t.clientY - ey) > 60) { ex = null; rail.style.transform = ''; rail.classList.remove('dragging'); return; }
-      if (edx > 8) {
+      var t = e.touches[0], dx = t.clientX - ex, dy = t.clientY - ey;
+      if (!lock) {
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+        lock = (dx > 0 && Math.abs(dx) > Math.abs(dy) * 1.4) ? 'x' : 'y';
+        if (lock === 'y') { ex = null; return; }
         rail.classList.add('dragging'); rail.style.visibility = 'visible';
-        rail.style.transform = 'translate3d(' + Math.min(0, edx - rail.offsetWidth) + 'px,0,0)';
       }
+      edx = dx;
+      rail.style.transform = 'translate3d(' + Math.min(0, edx - rail.offsetWidth) + 'px,0,0)';
+      document.getElementById('scrim').style.opacity = Math.min(1, edx / rail.offsetWidth);
     }, { passive: true });
-    document.addEventListener('touchend', function () {
+    function endEdge() {
       if (ex === null) return;
-      ex = null; rail.classList.remove('dragging'); rail.style.transform = ''; rail.style.visibility = '';
-      if (edx > 70) setOpen(true);
-    });
+      var opened = lock === 'x' && edx > 60;
+      ex = null; lock = '';
+      rail.classList.remove('dragging'); rail.style.transform = ''; rail.style.visibility = '';
+      document.getElementById('scrim').style.opacity = '';
+      if (opened) setOpen(true);
+    }
+    document.addEventListener('touchend', endEdge);
+    document.addEventListener('touchcancel', endEdge);
 
     // 손가락으로 왼쪽으로 밀면 따라오다가 일정 거리 넘으면 닫힌다
     var x0 = null, dx = 0;
@@ -1602,7 +1618,7 @@
       .cooldownTicks(Infinity)
       .cooldownTime(Infinity)
       .autoPauseRedraw(false)
-      .enableNodeDrag(!COARSE)
+      .enableNodeDrag(true)
       // 휠로 바로 확대한다. 처음 크기까지 축소된 뒤 더 내리면 그때부터 페이지가 스크롤된다
       .enableZoomInteraction(false)   // 휠 확대는 아래에서 직접 부드럽게 처리한다
       // 휴대폰: 평소엔 손가락이 페이지를 스크롤하고, 전체화면에서만 그래프를 움직인다
@@ -1756,7 +1772,6 @@
       fullBtn.innerHTML = '<i class="fa-solid ' + (on ? 'fa-compress' : 'fa-expand') + '"></i>';
       fullBtn.setAttribute('aria-label', on ? 'Exit full screen' : 'Full screen');
       fullBtn.title = on ? 'Exit full screen' : 'Full screen';
-      g.enableNodeDrag(!COARSE || on);
       setTimeout(function () { makeStars(); fit(REDUCED ? 0 : 700); }, 80);
     }
     card.querySelector('.ctrl').addEventListener('click', function (e) {
@@ -1784,6 +1799,27 @@
       var gp = g.screen2GraphCoords(x, y); mouse.gx = gp.x; mouse.gy = gp.y;
     });
     host.addEventListener('pointerleave', function () { mouse.tx = 0; mouse.ty = 0; mouse.on = false; });
+
+    // 두 손가락으로 벌리면 확대, 오므리면 축소, 같이 움직이면 이동 (휴대폰, 전체화면이 아닐 때)
+    var pinch = null;
+    function tp(t) { var r = host.getBoundingClientRect(); return { x: t.clientX - r.left, y: t.clientY - r.top }; }
+    host.addEventListener('touchstart', function (e) {
+      if (expanded || e.touches.length !== 2) return;
+      var a = tp(e.touches[0]), b = tp(e.touches[1]), m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      pinch = { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, k: g.zoom(), g: g.screen2GraphCoords(m.x, m.y) };
+      zt = null;
+    }, { passive: true, capture: true });
+    host.addEventListener('touchmove', function (e) {
+      if (!pinch || e.touches.length !== 2) return;
+      e.preventDefault();
+      var a = tp(e.touches[0]), b = tp(e.touches[1]), m = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      var k = Math.max(minK(), Math.min(8, pinch.k * (Math.hypot(a.x - b.x, a.y - b.y) / pinch.d)));
+      var W = host.clientWidth, H = host.clientHeight;
+      g.zoom(k, 0);
+      g.centerAt(pinch.g.x - (m.x - W / 2) / k, pinch.g.y - (m.y - H / 2) / k, 0);
+    }, { passive: false, capture: true });
+    host.addEventListener('touchend', function (e) { if (e.touches.length < 2) pinch = null; }, { capture: true });
+    host.addEventListener('touchcancel', function () { pinch = null; }, { capture: true });
 
     // 부드러운 휠 확대: 커서 아래 지점을 붙잡은 채로 목표 배율까지 미끄러지듯 다가간다
     var zt = null, za = null;
