@@ -22,6 +22,8 @@
       var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme-setting', t);
+      var l = 'en'; try { l = localStorage.getItem('lang') || 'en'; } catch (e) {}
+      if (l === 'ko') document.documentElement.setAttribute('lang', 'ko');
     })();
   </script>
 
@@ -57,14 +59,31 @@
     }
     ::selection { background: var(--ink); color: var(--bg); }
     :focus-visible { outline: 1.5px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
-    .wrap { width: 100%; max-width: 520px; padding: 56px 16px calc(32px + env(safe-area-inset-bottom)); }
+    .wrap { width: 100%; max-width: 520px; padding: 68px 16px calc(32px + env(safe-area-inset-bottom)); }
 
-    #theme-toggle {
-      position: fixed; top: 14px; right: 14px; width: 40px; height: 40px; display: grid; place-items: center;
+    /* 오른쪽 위: 언어, 테마 */
+    .top-btns { position: absolute; top: 14px; right: 14px; z-index: 5; display: flex; gap: 8px; }
+    .top-btns button {
+      height: 40px; min-width: 40px; padding: 0 10px; display: grid; place-items: center;
       border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; cursor: pointer;
-      transition: border-color .25s var(--ease);
+      font: 500 .82rem var(--sans); transition: border-color .25s var(--ease);
     }
-    #theme-toggle:hover { border-color: var(--line-2); }
+    .top-btns button:hover { border-color: var(--line-2); }
+
+    /* 맨 위 카드: 홈페이지 지식그래프와 같은 우주 (테마와 상관없이 항상 어둡다) */
+    .hero {
+      position: relative; overflow: hidden; border-radius: 18px; padding: 24px 22px 22px; color: #f1f1ef;
+      background: radial-gradient(120% 100% at 30% 20%, #12151c 0%, #07080b 60%, #030304 100%);
+      border: 1px solid rgba(255, 255, 255, .06); box-shadow: 0 1px 2px rgba(0,0,0,.2), 0 20px 50px rgba(0,0,0,.25);
+    }
+    .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .hero > :not(canvas) { position: relative; }
+    .hero h1 .ko { color: #a2a6ad; }
+    .hero .claim { margin: 20px 0 0; color: #e6e6e3; }
+    .hero .photo { box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 10px 30px rgba(0,0,0,.5); }
+    .hero + a.link { margin-top: 18px; }
+    html[lang="ko"] .group, html[lang="ko"] h1 .ko { letter-spacing: .02em; font-family: var(--sans); }
+    html[lang="ko"] body { word-break: keep-all; }
 
     .head { display: grid; grid-template-columns: 88px 1fr; gap: 20px; align-items: center; }
     .photo { width: 88px; aspect-ratio: 4 / 5; border-radius: 10px; overflow: hidden; background: var(--surface-2); box-shadow: var(--shadow); }
@@ -101,32 +120,38 @@
   </style>
 </head>
 <body>
-  <button id="theme-toggle" title="Change theme" aria-label="Change theme"><i class="fa-solid fa-circle-half-stroke"></i></button>
+  <div class="top-btns">
+    <button id="lang-toggle" class="notranslate" translate="no" aria-label="한국어로 보기" title="한국어로 보기">한</button>
+    <button id="theme-toggle" title="Change theme" aria-label="Change theme"><i class="fa-solid fa-circle-half-stroke"></i></button>
+  </div>
 
   <div class="wrap">
-    <div class="head rv">
+    <div class="hero rv">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <div class="head">
       <div class="photo"><img src="assets/portrait.jpg" alt="Portrait of Seokje Lim" width="88" height="110" /></div>
-      <h1 class="notranslate" translate="no">Seokje Lim<span class="ko">임석제 · published as SakJae Lim</span></h1>
+      <h1 class="notranslate" translate="no">Seokje Lim<span class="ko" data-ko="임석제 · 논문, 여권 표기 SakJae Lim">임석제 · published as SakJae Lim</span></h1>
     </div>
-    <p class="claim rv" style="--d:.05s">Researcher and practitioner. I study evidence-grounded AI and put it to work in public-sector IT consulting.</p>
+    <p class="claim" data-ko="연구자이자 실무자입니다. 근거에 기반한 AI를 연구하고, 그것을 공공 부문 IT 컨설팅 현장에 적용합니다.">Researcher and practitioner. I study evidence-grounded AI and put it to work in public-sector IT consulting.</p>
+    </div>
 
     <a class="link primary rv" style="--d:.1s" href="./">
       <i class="fa-solid fa-house"></i>
-      <span class="label">Homepage<span class="sub">sakjaelim.github.io</span></span><span class="arr">→</span>
+      <span class="label" data-ko="홈페이지&lt;span class=&quot;sub&quot;&gt;sakjaelim.github.io&lt;/span&gt;">Homepage<span class="sub">sakjaelim.github.io</span></span><span class="arr">→</span>
     </a>
     <a class="link rv" style="--d:.13s" href="mailto:%6C%69%6D.%61%69%63%70%61.%64%73@%73%74%75%64.%61%73%73%69%73%74.%61%63.%6B%72">
       <i class="fa-solid fa-envelope"></i>
-      <span class="label">Email<span class="sub">School email</span></span><span class="arr">→</span>
+      <span class="label" data-ko="이메일&lt;span class=&quot;sub&quot;&gt;학교 이메일&lt;/span&gt;">Email<span class="sub">School email</span></span><span class="arr">→</span>
     </a>
 
-    <div class="group rv" style="--d:.16s">Research</div>
+    <div class="group rv" style="--d:.16s" data-ko="연구">Research</div>
     <a class="link rv" style="--d:.18s" href="https://doi.org/10.7469/jksqm.2026.54.3.457" target="_blank" rel="noopener noreferrer">
       <i class="fa-solid fa-file-lines"></i>
-      <span class="label">Latest paper (JKSQM, 2026)<span class="sub">Grounded alignment of LLM explanations in financial risk early warning</span></span><span class="arr">↗</span>
+      <span class="label" data-ko="최신 논문 (품질경영학회지, 2026)&lt;span class=&quot;sub&quot;&gt;금융 리스크 조기경보에서 LLM 설명의 근거 정합성 평가&lt;/span&gt;">Latest paper (JKSQM, 2026)<span class="sub">Grounded alignment of LLM explanations in financial risk early warning</span></span><span class="arr">↗</span>
     </a>
     <a class="link rv" style="--d:.2s" href="https://arxiv.org/abs/2608.29136" target="_blank" rel="noopener noreferrer">
       <i class="ai ai-arxiv"></i>
-      <span class="label">Preprint (arXiv, 2026)<span class="sub">Not the Same Protector: protective intervention in LLMs</span></span><span class="arr">↗</span>
+      <span class="label" data-ko="프리프린트 (arXiv, 2026)&lt;span class=&quot;sub&quot;&gt;Not the Same Protector: 배포 환경에 따른 LLM의 보호적 개입&lt;/span&gt;">Preprint (arXiv, 2026)<span class="sub">Not the Same Protector: protective intervention in LLMs</span></span><span class="arr">↗</span>
     </a>
     <a class="link rv" style="--d:.22s" href="https://scholar.google.com/citations?user=IWgzQeEAAAAJ" target="_blank" rel="noopener noreferrer">
       <i class="ai ai-google-scholar"></i>
@@ -144,11 +169,19 @@
       <i class="fa-solid fa-book-open"></i>
       <span class="label">OpenReview</span><span class="arr">↗</span>
     </a>
+    <a class="link rv" style="--d:.29s" href="https://www.kci.go.kr/kciportal/po/citationindex/poCretDetail.kci?citationBean.cretId=CRT003551604" target="_blank" rel="noopener noreferrer">
+      <i class="fa-solid fa-book"></i>
+      <span class="label" data-ko="KCI 저자 페이지&lt;span class=&quot;sub&quot;&gt;한국학술지인용색인&lt;/span&gt;">KCI author profile<span class="sub">Korea Citation Index</span></span><span class="arr">↗</span>
+    </a>
+    <a class="link rv" style="--d:.3s" href="https://www.dbpia.co.kr/author/authorDetail?ancId=641195966" target="_blank" rel="noopener noreferrer">
+      <i class="fa-solid fa-database"></i>
+      <span class="label" data-ko="DBpia 저자 페이지">DBpia author profile</span><span class="arr">↗</span>
+    </a>
 
-    <div class="group rv" style="--d:.3s">Code &amp; Profile</div>
+    <div class="group rv" style="--d:.32s" data-ko="코드와 프로필">Code &amp; Profile</div>
     <a class="link rv" style="--d:.32s" href="https://github.com/SakJaeLim" target="_blank" rel="noopener noreferrer">
       <i class="fa-brands fa-github"></i>
-      <span class="label">GitHub<span class="sub">TrustFlow MCP, PaperOps, and more</span></span><span class="arr">↗</span>
+      <span class="label" data-ko="GitHub&lt;span class=&quot;sub&quot;&gt;TrustFlow MCP, PaperOps 외&lt;/span&gt;">GitHub<span class="sub">TrustFlow MCP, PaperOps, and more</span></span><span class="arr">↗</span>
     </a>
     <a class="link rv" style="--d:.34s" href="https://huggingface.co/AICPADSLIM" target="_blank" rel="noopener noreferrer">
       <i class="fa-solid fa-face-smile"></i>
@@ -187,6 +220,61 @@
       mq.addEventListener('change', function () {
         if (root.getAttribute('data-theme-setting') === 'system') apply('system');
       });
+    })();
+
+    // 언어: 홈페이지에서 고른 값(localStorage 'lang')을 같이 쓴다. 이 페이지는 영어와 한국어만 손번역이 있다
+    (function () {
+      var root = document.documentElement, btn = document.getElementById('lang-toggle');
+      function apply(on) {
+        document.querySelectorAll('[data-ko]').forEach(function (el) {
+          if (on) { if (el.dataset.en == null) el.dataset.en = el.innerHTML; el.innerHTML = el.dataset.ko; }
+          else if (el.dataset.en != null) el.innerHTML = el.dataset.en;
+        });
+        root.setAttribute('lang', on ? 'ko' : 'en');
+        btn.textContent = on ? 'EN' : '한';
+        btn.title = on ? 'View in English' : '한국어로 보기';
+        btn.setAttribute('aria-label', btn.title);
+      }
+      var cur = 'en'; try { cur = localStorage.getItem('lang') || 'en'; } catch (e) {}
+      apply(cur === 'ko');
+      btn.addEventListener('click', function () {
+        var on = root.getAttribute('lang') !== 'ko';
+        try { localStorage.setItem('lang', on ? 'ko' : 'en'); } catch (e) {}
+        apply(on);
+      });
+    })();
+
+    // 맨 위 카드의 별: 천천히 반짝인다. 장식 움직임이 꺼져 있으면 한 번만 그린다
+    (function () {
+      var cv = document.getElementById('stars'), ctx = cv.getContext('2d'), stars = [], W = 0, H = 0;
+      var mp = null; try { mp = localStorage.getItem('motion'); } catch (e) {}
+      var still = mp ? mp === 'off' : window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function size() {
+        var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+        W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0);
+        stars = [];
+        for (var i = 0, n = Math.round(W * H / 1400); i < n; i++) {
+          var z = Math.pow(Math.random(), 2.2);
+          stars.push({ x: Math.random() * W, y: Math.random() * H, z: z, ph: Math.random() * 6.28, sp: 0.25 + Math.random() * 0.6 });
+        }
+      }
+      function draw(t) {
+        ctx.clearRect(0, 0, W, H);
+        var gr = ctx.createRadialGradient(W * 0.75, H * 0.3, 0, W * 0.75, H * 0.3, W * 0.6);
+        gr.addColorStop(0, 'rgba(130,150,190,0.08)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+        stars.forEach(function (s) {
+          var tw = still ? 1 : 0.7 + 0.3 * Math.sin(t / 1000 * s.sp + s.ph);
+          ctx.globalAlpha = (0.14 + 0.6 * s.z) * tw; ctx.fillStyle = '#fff';
+          ctx.beginPath(); ctx.arc(s.x, s.y, 0.3 + s.z * 1.05, 0, 6.283); ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+      }
+      var visible = true;
+      function loop(t) { if (visible) draw(t); if (!still) requestAnimationFrame(loop); }
+      size(); draw(0); if (!still) requestAnimationFrame(loop);
+      window.addEventListener('resize', function () { size(); draw(performance.now()); });
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(cv);
     })();
   </script>
 </body>
