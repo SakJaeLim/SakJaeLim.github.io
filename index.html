@@ -320,6 +320,7 @@
       background: none; cursor: pointer; font-size: .85rem; color: var(--ink); transition: padding-left .4s var(--ease);
     }
     .insp li button:hover { padding-left: 6px; }
+    .insp .cls { font-family: var(--mono); letter-spacing: .02em; text-transform: none; opacity: .8; }
     .insp li .r { font-family: var(--mono); font-size: .7rem; color: var(--ink-2); white-space: nowrap; padding-top: 2px; }
 
     @media (max-width: 1023px) {
@@ -1078,17 +1079,6 @@
     function KO() { return document.documentElement.lang === 'ko'; }
     var TYPES_KO = { person: '인물', topic: '연구 주제', practice: '실무', pub: '논문', project: '프로젝트', org: '기관', tech: '기술' };
     var SECTION_KO = { publications: '논문', projects: '프로젝트', teaching: '강의', education: '학력', experience: '경력', news: '소식' };
-    var REL_KO = {
-      'studies': '연구', 'practices': '실무', 'teaches': '강의', 'first author': '제1저자', 'co-author': '공저자', 'built': '개발',
-      'contributor': '기여', 'Ph.D. student': '박사과정', 'member': '소속', 'EMBA, DBA track': 'EMBA, DBA 트랙',
-      'senior consultant': '선임 컨설턴트', 'consultant': '컨설턴트', 'instructor': '강사', 'tutor': '튜터', 'reviewer': '심사위원',
-      'grounds': '근거 제공', 'publishes as': '공개 형태', 'depends on': '의존', 'audits': '검증', 'part of': '일부',
-      'constrained by': '제약', 'evaluates': '평가', 'domain': '분야', 'uses': '사용', 'tests': '검증', 'implements': '구현',
-      'built on': '기반', 'queries': '질의', 'evidence-linked': '근거 연결', 'traceable': '추적', 'ontology-based': '온톨로지 기반',
-      'is an': '유형', 'extends': '확장', 'written in': '작성 언어', 'reasoning': '추론', 'guardrails': '가드레일', 'delivers': '수행',
-      'diagnosed': '진단', 'researches': '연구', 'dual track': '복수학위', 'hosts': '운영', 'AI program': 'AI 프로그램',
-      'stores': '저장', 'encodes': '표현', 'orchestrates': '조율', 'connects': '연결'
-    };
     var D_KO = {
       me: '논문, 여권 표기 SakJae Lim. aSSIST 박사과정생이자 Nextdnt 선임 컨설턴트. 근거 기반 AI를 연구하고 공공 부문 IT 컨설팅에 적용합니다.',
       ont: 'AI의 답을 검증하는 기준 구조로서의 온톨로지와 지식그래프.',
@@ -1115,7 +1105,7 @@
       lab: 'aSSIST 정낙현 교수 연구실.',
       sdg: 'Executive MBA (2026년 8월 취득). 복수 DBA 트랙, 2026년 가을 입학 허가.',
       nextdnt: '선임 컨설턴트, 2026–.',
-      tui: '데이터 전략 컨설턴트, 2025. 국가중점데이터 개방 계획과 품질진단.',
+      e2c: '데이터 전략 컨설턴트, 2025. 국가중점데이터 개방 계획과 품질진단.',
       ablearn: 'AI 파트너 강사 6기. Claude Code 교육과정 3편.',
       sparta: '기업교육 기술튜터, 2026년 1월–6월.',
       at: '직원 AI 과제 보고서 27건 심사, 2026년 10월.',
@@ -1126,7 +1116,6 @@
       mcp: 'AI 에이전트가 도구를 쓰는 표준 인터페이스, Model Context Protocol.'
     };
     function tType(t) { return KO() ? TYPES_KO[t] : TYPES[t]; }
-    function tRel(r) { return KO() && REL_KO[r] ? REL_KO[r] : r; }
     function tDesc(n) { return KO() && D_KO[n.id] ? D_KO[n.id] : n.d; }
 
     // 노드: 근거가 있는 사실만 넣는다 (논문, 저장소, 학위, 직장)
@@ -1156,7 +1145,7 @@
       { id: 'lab', type: 'org', label: 'AI & Time-Series Lab', d: 'Research lab of Prof. Nak Hyun Jung at aSSIST University.', sec: 'education' },
       { id: 'sdg', type: 'org', label: 'SDG Management School', d: 'Executive MBA (conferred Aug 2026). Dual DBA track, admitted Fall 2026.', sec: 'education' },
       { id: 'nextdnt', type: 'org', label: 'Nextdnt', d: 'Senior Consultant, 2026 –.', sec: 'experience' },
-      { id: 'tui', type: 'org', label: '2e Consulting', d: 'Data Strategy Consultant, 2025. National core data opening plan and quality diagnostics.', sec: 'experience' },
+      { id: 'e2c', type: 'org', label: '2e Consulting', d: 'Data Strategy Consultant, 2025. National core data opening plan and quality diagnostics.', sec: 'experience' },
       { id: 'ablearn', type: 'org', label: 'Ablearn', d: 'AI Partner Instructor, 6th cohort. Three-part Claude Code curriculum.', sec: 'teaching' },
       { id: 'sparta', type: 'org', label: 'Sparta Coding Club', d: 'Corporate AI education technical tutor, 2026-01 to 06.', sec: 'teaching' },
       { id: 'at', type: 'org', label: 'aT AI Frontier', d: 'Reviewer of 27 employee AI project reports, 2026-10.', sec: 'teaching' },
@@ -1166,37 +1155,82 @@
       { id: 'shap', type: 'tech', label: 'SHAP', d: 'Feature attributions used as evidence for LLM explanations.' },
       { id: 'mcp', type: 'tech', label: 'MCP', d: 'Model Context Protocol, the tool interface for AI agents.' }
     ];
-    // 관계: [주어, 목적어, 관계 이름]
+    // 노드 종류마다 표준 어휘의 클래스를 붙인다 (schema.org, SKOS)
+    var CLASS = { person: 'schema:Person', topic: 'skos:Concept', practice: 'schema:Service', pub: 'schema:ScholarlyArticle',
+                  project: 'schema:SoftwareSourceCode', org: 'schema:Organization', tech: 'schema:DefinedTerm' };
+    // 관계 어휘: 키: [영어(주어 쪽에서), 영어(목적어 쪽에서), 한국어(주어 쪽에서 본 상대의 역할), 한국어(목적어 쪽에서 본 상대의 역할), 선 위 짧은 이름, 대칭 여부]
+    var PRED = {
+      researches:    ['researches', 'researched by', '연구 주제', '연구자', '연구'],
+      practices:     ['practices', 'practiced by', '실무 분야', '실무자', '실무'],
+      teaches:       ['teaches', 'taught by', '강의 분야', '강사', '강의'],
+      firstAuthorOf: ['first author of', 'first author', '제1저자 논문', '제1저자', '제1저자'],
+      coAuthorOf:    ['co-author of', 'co-author', '공저 논문', '공저자', '공저'],
+      developed:     ['developed', 'developed by', '개발 프로젝트', '개발자', '개발'],
+      contributedTo: ['contributed to', 'contributor', '기여 프로젝트', '기여자', '기여'],
+      studiesAt:     ['Ph.D. student at', 'Ph.D. student', '박사과정 학교', '박사과정생', '박사과정'],
+      alumnusOf:     ['alumnus of', 'alumnus', '졸업 학교', '졸업생', '졸업'],
+      memberOf:      ['member of', 'member', '소속 연구실', '구성원', '소속'],
+      worksFor:      ['works for', 'employs', '재직 회사', '재직자', '재직'],
+      workedFor:     ['worked for', 'former employer of', '전 직장', '전 근무자', '전 직장'],
+      instructorAt:  ['instructor at', 'instructor', '강사 활동처', '강사', '강사'],
+      tutorAt:       ['tutor at', 'tutor', '튜터 활동처', '튜터', '튜터'],
+      reviewerFor:   ['reviewer for', 'reviewer', '심사 기관', '심사위원', '심사'],
+      broader:       ['part of', 'includes', '상위 개념', '하위 개념', '상위 개념'],
+      related:       ['related to', 'related to', '관련', '관련', '관련', true],
+      addresses:     ['addresses', 'addressed by', '다루는 주제', '다룬 논문', '다룸'],
+      appliedTo:     ['applied to', 'application', '적용 분야', '적용 논문', '적용'],
+      uses:          ['uses', 'used by', '사용 기법', '사용 논문', '사용'],
+      implements:    ['implements', 'implemented by', '구현 개념', '구현 프로젝트', '구현'],
+      builtWith:     ['built with', 'used in', '사용 기술', '사용 프로젝트', '기술'],
+      usedFor:       ['used for', 'supported by', '활용 분야', '활용 기술', '활용'],
+      standardFor:   ['standard for', 'standardized by', '표준 대상', '표준', '표준'],
+      partOf:        ['part of', 'has unit', '상위 조직', '하위 조직', '소속'],
+      partnerOf:     ['dual degree with', 'dual degree with', '복수학위 협력', '복수학위 협력', '복수학위', true],
+      provides:      ['provides', 'provided by', '제공 서비스', '제공 기관', '제공'],
+      offers:        ['offers', 'offered by', '운영 과정', '운영 기관', '운영']
+    };
+    // 세 쌍: [주어, 관계, 목적어]. 근거가 확인되지 않은 연결은 related(관련)로만 약하게 둔다
     var E = [
-      ['me','ont','studies'], ['me','ega','studies'], ['me','xai','studies'], ['me','pdq','studies'],
-      ['me','isp','practices'], ['me','ax','practices'], ['me','edu','teaches'],
-      ['me','p1','first author'], ['me','p2','co-author'],
-      ['me','trustflow','built'], ['me','paperops','built'], ['me','hps','built'], ['me','kn','built'],
-      ['me','cco','contributor'], ['me','factlog','contributor'], ['me','xazz','contributor'],
-      ['me','assist','Ph.D. student'], ['me','lab','member'], ['me','sdg','EMBA, DBA track'],
-      ['me','nextdnt','senior consultant'], ['me','tui','consultant'],
-      ['me','ablearn','instructor'], ['me','sparta','tutor'], ['me','at','reviewer'],
-      ['ont','ega','grounds'], ['ont','lod','publishes as'], ['lod','pdq','depends on'],
-      ['ega','xai','audits'], ['xai','trust','part of'], ['agent','trust','constrained by'],
-      ['p1','xai','evaluates'], ['p1','fts','domain'], ['p1','shap','uses'], ['p1','ega','tests'], ['p2','trust','studies'],
-      ['trustflow','agent','implements'], ['trustflow','mcp','built on'], ['trustflow','ont','queries'], ['trustflow','ega','evidence-linked'],
-      ['paperops','ega','traceable'], ['hps','ont','ontology-based'], ['hps','neo4j','uses'], ['hps','langgraph','uses'],
-      ['kn','agent','is an'], ['cco','ont','extends'], ['cco','rdf','written in'], ['factlog','ont','reasoning'], ['xazz','agent','guardrails'],
-      ['nextdnt','isp','delivers'], ['nextdnt','ax','delivers'], ['nextdnt','ont','delivers'], ['tui','pdq','diagnosed'],
-      ['lab','fts','researches'], ['lab','assist','part of'], ['assist','sdg','dual track'],
-      ['ablearn','edu','hosts'], ['sparta','edu','hosts'], ['at','ax','AI program'],
-      ['neo4j','ont','stores'], ['rdf','ont','encodes'], ['langgraph','agent','orchestrates'], ['mcp','agent','connects']
+      // 인물
+      ['me','researches','ont'], ['me','researches','ega'], ['me','researches','xai'], ['me','researches','pdq'], ['me','researches','fts'],
+      ['me','practices','isp'], ['me','practices','ax'], ['me','teaches','edu'],
+      ['me','firstAuthorOf','p1'], ['me','coAuthorOf','p2'],
+      ['me','developed','trustflow'], ['me','developed','paperops'], ['me','developed','hps'], ['me','developed','kn'],
+      ['me','contributedTo','cco'], ['me','contributedTo','factlog'], ['me','contributedTo','xazz'],
+      ['me','studiesAt','assist'], ['me','alumnusOf','sdg'], ['me','memberOf','lab'],
+      ['me','worksFor','nextdnt'], ['me','workedFor','e2c'],
+      ['me','instructorAt','ablearn'], ['me','tutorAt','sparta'], ['me','reviewerFor','at'],
+      // 연구 주제끼리 (SKOS: 상위 개념, 관련 개념)
+      ['xai','broader','trust'], ['ega','broader','trust'], ['agent','broader','trust'],
+      ['ont','related','ega'], ['lod','related','ont'], ['pdq','related','lod'], ['ega','related','xai'],
+      // 논문
+      ['p1','addresses','xai'], ['p1','addresses','ega'], ['p1','appliedTo','fts'], ['p1','uses','shap'], ['p2','addresses','trust'],
+      // 프로젝트
+      ['trustflow','implements','agent'], ['trustflow','implements','ega'], ['trustflow','builtWith','mcp'], ['trustflow','related','ont'],
+      ['paperops','implements','ega'],
+      ['hps','implements','ont'], ['hps','implements','agent'], ['hps','builtWith','neo4j'], ['hps','builtWith','langgraph'],
+      ['kn','implements','agent'], ['cco','implements','ont'], ['cco','builtWith','rdf'], ['factlog','related','ont'], ['xazz','implements','agent'],
+      // 기술
+      ['rdf','standardFor','ont'], ['neo4j','usedFor','ont'], ['langgraph','usedFor','agent'], ['mcp','usedFor','agent'], ['shap','usedFor','xai'],
+      // 기관
+      ['lab','partOf','assist'], ['lab','researches','fts'], ['assist','partnerOf','sdg'],
+      ['nextdnt','provides','isp'], ['nextdnt','provides','ax'], ['nextdnt','provides','ont'], ['e2c','provides','pdq'],
+      ['ablearn','offers','edu'], ['sparta','offers','edu'], ['at','related','ax']
     ];
 
     var byId = {};
     N.forEach(function (n) { n.adj = []; n._s = 1; byId[n.id] = n; });
     byId.me.fx = 0; byId.me.fy = 0;   // 가운데 사람 노드는 태양처럼 제자리에 둔다
     var L = E.map(function (e, i) {
-      var l = { source: e[0], target: e[1], rel: e[2], amb: i % 3 === 0 };
-      byId[e[0]].adj.push({ n: byId[e[1]], rel: e[2], out: true, l: l });
-      byId[e[1]].adj.push({ n: byId[e[0]], rel: e[2], out: false, l: l });
+      if (!PRED[e[1]] || !byId[e[0]] || !byId[e[2]]) throw new Error('bad triple ' + e.join(' '));
+      var l = { source: e[0], target: e[2], pred: e[1], amb: i % 3 === 0 };
+      byId[e[0]].adj.push({ n: byId[e[2]], pred: e[1], out: true, l: l });
+      byId[e[2]].adj.push({ n: byId[e[0]], pred: e[1], out: false, l: l });
       return l;
     });
+    // 관계 이름: 이 노드 쪽에서 읽은 이름 (나가는 관계는 그대로, 들어오는 관계는 거꾸로 읽은 이름)
+    function relName(pred, out) { var d = PRED[pred]; return KO() ? (out ? d[2] : d[3]) : (out ? d[0] : d[1]); }
+    function edgeName(pred) { var d = PRED[pred]; return KO() ? d[4] : d[0]; }
 
     // 그래프 상자 안의 색(항상 어두운 우주)을 읽는다
     var C = {};
@@ -1451,8 +1485,16 @@
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
         ctx.lineJoin = 'round'; ctx.lineWidth = 4 / k; ctx.strokeStyle = 'rgba(5,6,8,0.9)';
-        var rl = tRel(l.rel);
+        var rl = edgeName(l.pred);
         ctx.strokeText(rl, mx, my); ctx.fillStyle = C['--ink-2']; ctx.fillText(rl, mx, my);
+        if (!PRED[l.pred][5]) {   // 방향: 주어 → 목적어 (대칭 관계는 화살표 없음)
+          var dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx * dx + dy * dy) || 1, ux = dx / d, uy = dy / d;
+          var tip = (b.r || 6) + 4 / k, hx = b.x - ux * tip, hy = b.y - uy * tip, s2 = 6 / k;
+          ctx.beginPath(); ctx.moveTo(hx, hy);
+          ctx.lineTo(hx - ux * s2 * 1.6 - uy * s2, hy - uy * s2 * 1.6 + ux * s2);
+          ctx.lineTo(hx - ux * s2 * 1.6 + uy * s2, hy - uy * s2 * 1.6 - ux * s2);
+          ctx.closePath(); ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.fill();
+        }
       }
       ctx.globalAlpha = 1;
     }
@@ -1562,11 +1604,7 @@
       .autoPauseRedraw(false)
       .enableNodeDrag(!COARSE)
       // 휠로 바로 확대한다. 처음 크기까지 축소된 뒤 더 내리면 그때부터 페이지가 스크롤된다
-      .enableZoomInteraction(function (e) {
-        var ok = expanded || !(e.type === 'wheel' && e.deltaY > 0 && g.zoom() <= baseK * 1.01);
-        if (e.type === 'wheel') window.__kgWheel = ok;   // 확대할 때는 페이지가 스크롤되지 않게
-        return ok;
-      })
+      .enableZoomInteraction(false)   // 휠 확대는 아래에서 직접 부드럽게 처리한다
       // 휴대폰: 평소엔 손가락이 페이지를 스크롤하고, 전체화면에서만 그래프를 움직인다
       .enablePanInteraction(function (e) { return expanded || e.type !== 'touchstart'; })
       .onRenderFramePre(framePre)
@@ -1651,14 +1689,18 @@
       var acts = '';
       if (n.sec) acts += '<a href="#' + n.sec + '" data-go="1">' + (KO() ? SECTION_KO[n.sec] + ' 섹션으로 ↓' : 'Open in ' + SECTION[n.sec] + ' ↓') + '</a>';
       if (n.href) acts += '<a href="' + n.href + '" target="_blank" rel="noopener noreferrer">' + (KO() ? '원문' : 'Source') + ' ↗</a>';
-      var rels = n.adj.slice().sort(function (a, b) { return PRI[a.n.type] - PRI[b.n.type]; }).map(function (x) {
-        return '<li><button data-id="' + x.n.id + '"><span>' + esc(x.n.label) + '</span><span class="r">' + (x.out ? '' : '← ') + esc(tRel(x.rel)) + '</span></button></li>';
+      var rels = n.adj.slice().sort(function (a, b) {
+        var ka = (a.out ? 0 : 1) + a.pred, kb = (b.out ? 0 : 1) + b.pred;
+        return ka < kb ? -1 : ka > kb ? 1 : PRI[a.n.type] - PRI[b.n.type];
+      }).map(function (x) {
+        var arrow = PRED[x.pred][5] ? '↔ ' : (x.out ? '→ ' : '← ');
+        return '<li><button data-id="' + x.n.id + '"><span>' + esc(x.n.label) + '</span><span class="r">' + arrow + esc(relName(x.pred, x.out)) + '</span></button></li>';
       }).join('');
       insp.innerHTML = '<button class="x" aria-label="Close details"><i class="fa-solid fa-xmark"></i></button>' +
-        '<span class="label">' + tType(n.type) + ' · ' + (KO() ? '관계 ' + n.adj.length + '개' : n.adj.length + ' relations') + '</span>' +
+        '<span class="label">' + tType(n.type) + ' · <span class="cls">' + CLASS[n.type] + '</span></span>' +
         '<h3>' + esc(n.label) + '</h3><p>' + esc(tDesc(n)) + '</p>' +
         (acts ? '<div class="acts">' + acts + '</div>' : '') +
-        '<span class="label">' + (KO() ? '관계' : 'Relations') + '</span><ul>' + rels + '</ul>';
+        '<span class="label">' + (KO() ? '관계 ' + n.adj.length + '개' : 'Relations · ' + n.adj.length) + '</span><ul>' + rels + '</ul>';
       insp.scrollTop = 0;
       insp.classList.add('open');
       updateFocus();
@@ -1742,6 +1784,33 @@
       var gp = g.screen2GraphCoords(x, y); mouse.gx = gp.x; mouse.gy = gp.y;
     });
     host.addEventListener('pointerleave', function () { mouse.tx = 0; mouse.ty = 0; mouse.on = false; });
+
+    // 부드러운 휠 확대: 커서 아래 지점을 붙잡은 채로 목표 배율까지 미끄러지듯 다가간다
+    var zt = null, za = null;
+    function minK() { return expanded ? 0.2 : baseK * 0.95; }
+    host.addEventListener('wheel', function (e) {
+      var k = g.zoom();
+      // 처음 크기에서 더 축소하려 하면 그래프는 가만히 두고 페이지가 스크롤된다
+      if (!expanded && e.deltaY > 0 && zt === null && k <= baseK * 1.01) { window.__kgWheel = false; return; }
+      e.preventDefault(); window.__kgWheel = true;
+      var r = host.getBoundingClientRect(), sx = e.clientX - r.left, sy = e.clientY - r.top;
+      var unit = e.deltaMode === 1 ? 0.05 : e.deltaMode === 2 ? 1 : 0.0016;
+      var f = Math.exp(-e.deltaY * unit * (e.ctrlKey ? 3 : 1));   // 트랙패드 집기는 ctrl 휠로 들어온다
+      zt = Math.max(minK(), Math.min(8, (zt === null ? k : zt) * f));
+      za = { sx: sx, sy: sy, g: g.screen2GraphCoords(sx, sy) };
+      if (!zooming) { zooming = true; requestAnimationFrame(zoomStep); }
+    }, { passive: false });
+    var zooming = false;
+    function zoomStep() {
+      if (zt === null) { zooming = false; return; }
+      var k = g.zoom(), nk = k + (zt - k) * (REDUCED ? 1 : 0.16);
+      if (Math.abs(zt - nk) < zt * 0.002) nk = zt;
+      var W = host.clientWidth, H = host.clientHeight;
+      g.zoom(nk, 0);
+      g.centerAt(za.g.x - (za.sx - W / 2) / nk, za.g.y - (za.sy - H / 2) / nk, 0);
+      if (nk === zt) { zt = null; zooming = false; return; }
+      requestAnimationFrame(zoomStep);
+    }
 
     // 크기가 바뀌면 캔버스와 별을 다시 맞추고, 화면 밖에 있으면 그리기를 멈춘다
     var lastW = 0, lastH = 0, refit = null;
